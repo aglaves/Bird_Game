@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     {
         moveInput.Enable();
         rigidbody2D = GetComponent<Rigidbody2D>();
+        rigidbody2D.rotation = 45f;
     }
 
     // Update is called once per frame
@@ -29,16 +30,20 @@ public class Player : MonoBehaviour
             moveDirection.Set(movement.x, movement.y);
             moveDirection.Normalize();
         }
-
-        // animator.SetFloat("Look X", moveDirection.x);
-        // animator.SetFloat("Look Y", moveDirection.y);
-        //Debug.Log(string.Format("Magnitude: {0}", moveDirection.magnitude));
-        // animator.SetFloat("Speed", move.magnitude);
     }
 
     void FixedUpdate() {
-        Vector2 position = (Vector2) rigidbody2D.position + movement * speed * Time.deltaTime;
-        rigidbody2D.MovePosition(position);
+        Vector2 currentPosition = (Vector2) rigidbody2D.position;
+        Vector2 newPosition = (Vector2) rigidbody2D.position + movement * speed * Time.deltaTime;
+        rigidbody2D.MovePosition(newPosition);
+        rigidbody2D.MoveRotation(CalculateAngle(currentPosition, newPosition));        
+    }
 
+    private float CalculateAngle(Vector2 startPosition, Vector2 endPosition) {
+        float rise = endPosition.y - startPosition.y;
+        float run = endPosition.x - startPosition.x;
+        float angle = Mathf.Atan2(rise, run) * Mathf.Rad2Deg;
+        Debug.Log("Rise: " + rise + " Run: " + run + " Calculated angle of movement: " + angle);
+        return angle -90;
     }
 }
