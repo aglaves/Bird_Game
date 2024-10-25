@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         movement = moveInput.ReadValue<Vector2>();
-        //Debug.Log(move);
+        // Debug.Log(movement.x);
 
         if (!Mathf.Approximately(movement.x, 0.0f) || !Mathf.Approximately(movement.y, 0.0f)) {
             moveDirection.Set(movement.x, movement.y);
